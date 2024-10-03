@@ -1,0 +1,13 @@
+Product:Manzana;Stock:10;
+Product:Pera;Stock:20;
+Product:Hamburguesa;Stock:30;
+Product:Fresa;Stock:20;
+Product:Melocotón;Stock:10;
+Product:Mango;Stock:20;
+Product:Aguacate;Stock:30;
+Product:Cereza;Stock:20;
+Product:Naranja;Stock:10;
+Product:Kiwi;Stock:20;
+Product:Pomelo;Stock:30;
+
+Número total de productos:11
