@@ -86,7 +86,7 @@ public class ShopView extends javax.swing.JFrame implements KeyListener {
         jButton0.setText("0. Exportar Inventario");
         jButton0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportInventory();
+                exportInventory(evt);
             }
         });
         
@@ -172,17 +172,16 @@ public class ShopView extends javax.swing.JFrame implements KeyListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    private void exportInventory() {
+    private void exportInventory(java.awt.event.ActionEvent evt) {
+        boolean exportSuccess = shop.exportInventory(); 
 
-        // Llamar al método writeInventory y manejar el resultado
-        boolean exportSuccess = shop.writeInventory();
         if (exportSuccess) {
-            JOptionPane.showMessageDialog(this, "El inventario se ha exportado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Inventario exportado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "Hubo un error al exportar el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al exportar el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         int option = Constants.OPTION_ADD_PRODUCT;

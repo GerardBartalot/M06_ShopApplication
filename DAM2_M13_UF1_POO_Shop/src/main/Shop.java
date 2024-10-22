@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 
 import dao.Dao;
 import dao.DaoImplFile;
+import dao.DaoImplXml;
 import utils.Constants;
 import view.CashView;
 import view.ProductView;
@@ -29,7 +30,7 @@ public class Shop {
     private ArrayList<Product> inventory;
     private ArrayList<Sale> sales;
     int sale_num = 0;
-    private DaoImplFile dao;
+    private DaoImplXml dao;
 
     final static double TAX_RATE = 1.04;
 
@@ -37,7 +38,7 @@ public class Shop {
         cash = new Amount(50.0, "€");
         inventory = new ArrayList<>();
         sales = new ArrayList<>();
-        this.dao = new DaoImplFile();
+        this.dao = new DaoImplXml();
         readInventory();
     }
 
@@ -422,7 +423,7 @@ public class Shop {
 	    Product product = findProduct(name);
             if (product != null) {
                 inventory.remove(product);
-                return true; // Producto eliminado correctamente
+                return true;
             }
             return false;
 	}
@@ -447,6 +448,17 @@ public class Shop {
        //cashView.setDefaultCloseOperation(JDialog.DISPONE_ON_CLOSE);
        cashView.setVisible(true);
     }
+    
+    public boolean exportInventory() {
+        boolean exportSuccess = dao.writeInventory(inventory);
+
+        if (!exportSuccess) {
+            return false;
+        }
+
+        return true;
+    }
+
     
     
 

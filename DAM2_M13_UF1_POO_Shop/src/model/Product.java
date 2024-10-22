@@ -11,6 +11,7 @@ public class Product {
 
     final static double EXPIRATION_RATE = 0.60;
 
+    // Constructor
     public Product(String name, Amount wholesalerPrice, boolean available, int stock) {
         super();
         this.id = totalProducts + 1;
@@ -23,72 +24,73 @@ public class Product {
         totalProducts++;
     }
 
-	public int getId() {
-		return id;
-	}
+    // Getters y Setters
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Amount getPublicPrice() {
-		return publicPrice;
-	}
+    public Amount getPublicPrice() {
+        return publicPrice;
+    }
 
-	public void setPublicPrice(Amount publicPrice) {
-		this.publicPrice = publicPrice;
-	}
+    public void setPublicPrice(Amount publicPrice) {
+        this.publicPrice = publicPrice;
+    }
 
-	public Amount getWholesalerPrice() {
-		return wholesalerPrice;
-	}
+    public Amount getWholesalerPrice() {
+        return wholesalerPrice;
+    }
 
-	public void setWholesalerPrice(Amount wholesalerPrice) {
-		this.wholesalerPrice = wholesalerPrice;
-	}
+    public void setWholesalerPrice(Amount wholesalerPrice) {
+        this.wholesalerPrice = wholesalerPrice;
+    }
 
-	public boolean isAvailable() {
-		return available;
-	}
+    public boolean isAvailable() {
+        return available;
+    }
 
-	public void setAvailable(boolean available) {
-		this.available = available;
-	}
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
 
-	public int getStock() {
-		return stock;
-	}
+    public int getStock() {
+        return stock;
+    }
 
-	public int setStock(int stock) {
-		return this.stock = stock;
-	}
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
-	public static int getTotalProducts() {
-		return totalProducts;
-	}
+    public static int getTotalProducts() {
+        return totalProducts;
+    }
 
-	public static void setTotalProducts(int totalProducts) {
-		Product.totalProducts = totalProducts;
-	}
-	
-	public void expire() {
-	    double newValue = this.publicPrice.getValue() * EXPIRATION_RATE;
-	    this.publicPrice = new Amount(newValue, this.publicPrice.getCurrency());
-	}
+    public static void setTotalProducts(int totalProducts) {
+        Product.totalProducts = totalProducts;
+    }
 
-	@Override
-	public String toString() {
-		return "Product --> [Name = " + name + ", Public Price = " + publicPrice + ", Wholesaler Price = " + wholesalerPrice
-				+ ", \n             Available = " + available + ", Stock = " + stock + "]";
-	}
+    // Método para aplicar tasa de expiración al precio público
+    public void expire() {
+        double newValue = this.publicPrice.getValue() * EXPIRATION_RATE;
+        this.publicPrice = new Amount(newValue, this.publicPrice.getCurrency());
+    }
 
-	  
+    // Sobreescribir el método toString para imprimir detalles del producto
+    @Override
+    public String toString() {
+        return "Product --> [Name = " + name + ", Public Price = " + publicPrice + ", Wholesaler Price = " + wholesalerPrice
+                + ", \n             Available = " + available + ", Stock = " + stock + "]";
+    }
 }
