@@ -18,12 +18,17 @@ public class DaoImplJDBC implements Dao {
 
 	// Método para Connectar con la Base de Datos
 	@Override
-	public void connect() throws SQLException {
+	public void connect() {
 		// Define connection parameters
 		String url = "jdbc:mysql://localhost:3306/shop";
 		String user = "root";
 		String pass = "";
-		this.connection = DriverManager.getConnection(url, user, pass);
+		try {
+			this.connection = DriverManager.getConnection(url, user, pass);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

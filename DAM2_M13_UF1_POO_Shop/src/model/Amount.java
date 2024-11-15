@@ -1,5 +1,8 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+
 public class Amount {
     private double value;
     private String currency;
@@ -8,7 +11,11 @@ public class Amount {
         this.value = value;
         this.currency = currency;
     }
+    
+    public Amount() {
+    }
 
+    @XmlValue
     public double getValue() {
         return value;
     }
@@ -17,8 +24,9 @@ public class Amount {
         this.value = value;
     }
 
+    @XmlAttribute(name = "currency")
     public String getCurrency() {
-        return currency;
+        return "€";
     }
 
     public void setCurrency(String currency) {

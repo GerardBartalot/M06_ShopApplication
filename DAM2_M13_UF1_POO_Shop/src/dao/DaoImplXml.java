@@ -51,7 +51,7 @@ public class DaoImplXml implements Dao {
     }
     
     @Override
-    public void connect() throws SQLException {
+    public void connect() {
 
     }
     

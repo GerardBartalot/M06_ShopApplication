@@ -19,8 +19,9 @@ import javax.swing.JOptionPane;
 
 import dao.Dao;
 import dao.DaoImplFile;
+import dao.DaoImplJaxb;
 import dao.DaoImplXml;
-import utils.Constants;
+import utils.*;
 import view.CashView;
 import view.ProductView;
 
@@ -30,7 +31,7 @@ public class Shop {
     private ArrayList<Product> inventory;
     private ArrayList<Sale> sales;
     int sale_num = 0;
-    private DaoImplXml dao;
+    private DaoImplJaxb dao;
 
     final static double TAX_RATE = 1.04;
 
@@ -38,7 +39,8 @@ public class Shop {
         cash = new Amount(50.0, "€");
         inventory = new ArrayList<>();
         sales = new ArrayList<>();
-        this.dao = new DaoImplXml();
+        dao = new DaoImplJaxb();
+        loadInventory();
         readInventory();
     }
 
@@ -224,11 +226,12 @@ public class Shop {
 
 	/**
      * Exporta los datos de las ventas a un archivo con el formato especificado.
+	 * @throws IOException 
      */
 	
 	// Aquí Escribimos las Ventas en el Fichero
 	
-	public boolean writeInventory() {
+	public boolean writeInventory() throws IOException {
         return dao.writeInventory(this.inventory);
     }
 
@@ -449,17 +452,15 @@ public class Shop {
        cashView.setVisible(true);
     }
     
-    public boolean exportInventory() {
-        boolean exportSuccess = dao.writeInventory(inventory);
-
-        if (!exportSuccess) {
-            return false;
+    private void loadInventory() {
+        if (inventory == null) { // Cargar solo si no está cargado
+            inventory = dao.getInventory();
         }
-
-        return true;
     }
 
-    
-    
+    public boolean exportInventory() throws IOException {
+        loadInventory();
+        return dao.writeInventory(inventory);
+    }  
 
 }

@@ -7,7 +7,6 @@ package view;
 import javax.swing.JOptionPane;
 import view.ShopView;
 import model.Employee;
-import exception.LimitLoginException;
 import utils.Constants;
 
 /**

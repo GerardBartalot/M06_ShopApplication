@@ -30,7 +30,7 @@ public class DaoImplFile implements Dao{
 
 	// Método para Connectar con la Base de Datos
 	@Override
-	public void connect() throws SQLException {
+	public void connect() {
 	}
 	
 	@Override

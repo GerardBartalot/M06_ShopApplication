@@ -2,6 +2,7 @@ package model;
 
 import main.Payable;
 import model.Amount;
+import model.Person;;
 
 public class Client extends Person implements Payable {
 	

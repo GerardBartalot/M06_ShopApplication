@@ -10,11 +10,12 @@ import dao.DaoImplFile;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import main.Shop;
 import model.Product;
-import utils.Constants;
+import utils.*;
 
 public class ShopView extends javax.swing.JFrame implements KeyListener {
     // Tu código existente aquí
@@ -173,12 +174,14 @@ public class ShopView extends javax.swing.JFrame implements KeyListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exportInventory(java.awt.event.ActionEvent evt) {
-        boolean exportSuccess = shop.exportInventory(); 
+        try {
+            boolean exportSuccess = shop.exportInventory();
 
-        if (exportSuccess) {
-            JOptionPane.showMessageDialog(null, "Inventario exportado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al exportar el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (exportSuccess) {
+                JOptionPane.showMessageDialog(this, "Inventario exportado correctamente.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al exportar el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
