@@ -16,8 +16,8 @@ public class SaxReader extends DefaultHandler {
     
     private List<Product> products = null;
     private Product product = null;
-    private boolean WholesalerPrice = false;
-    private boolean Stock = false;
+    private boolean wholesalerPrice = false;
+    private boolean stock = false;
 
     // Método para iniciar el documento XML
     @Override
@@ -35,9 +35,11 @@ public class SaxReader extends DefaultHandler {
                 products = new ArrayList<>();
             }
         } else if (name.equalsIgnoreCase("wholesalerPrice")) {
-            WholesalerPrice = true;
+            wholesalerPrice = true;
+            String currency = attributes.getValue("currency");
+            product.setWholesalerPrice(new Amount(0, currency != null ? currency : "Euro")); // Configura la moneda
         } else if (name.equalsIgnoreCase("stock")) {
-            Stock = true;
+            stock = true;
         }
     }
 
@@ -45,12 +47,25 @@ public class SaxReader extends DefaultHandler {
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         String content = new String(ch, start, length).trim();
-        if (WholesalerPrice) {
-            product.setWholesalerPrice(new Amount(Double.parseDouble(content), "Euro"));
-            WholesalerPrice = false;
-        } else if (Stock) {
-            product.setStock(Integer.parseInt(content));
-            Stock = false;
+        if (wholesalerPrice) {
+            try {
+                double priceValue = Double.parseDouble(content);
+                Amount amount = product.getWholesalerPrice(); // Recupera el objeto Amount existente
+                amount.setValue(priceValue); // Actualiza el valor del precio mayorista
+                product.setWholesalerPrice(amount);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Valor de precio mayorista no válido. Se asignará 0.");
+                product.setWholesalerPrice(new Amount(0, "Euro"));
+            }
+            wholesalerPrice = false;
+        } else if (stock) {
+            try {
+                product.setStock(Integer.parseInt(content));
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Stock no válido. Se asignará 0.");
+                product.setStock(0);
+            }
+            stock = false;
         }
     }
 
