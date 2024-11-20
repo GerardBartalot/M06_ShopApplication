@@ -28,14 +28,15 @@ public class DomWriter {
             doc = builder.newDocument();
 
             Element rootElement = doc.createElement("products");
-            rootElement.setAttribute("total", String.valueOf(productList.size())); // Atributo total
+            rootElement.setAttribute("total", String.valueOf(Product.totalProducts));
             doc.appendChild(rootElement);
 
-            int id = 1;
             for (Product product : productList) {
                 // Crear el elemento con el nombre del producto
                 Element productElement = doc.createElement("product");
-                productElement.setAttribute("id", String.valueOf(id++));
+
+                // Usar el id del producto en lugar de un contador local
+                productElement.setAttribute("id", String.valueOf(product.getId())); 
                 rootElement.appendChild(productElement);
 
                 // Nombre del producto dentro del elemento <name>
