@@ -24,7 +24,7 @@ public class DaoImplXml implements Dao {
     @Override
     public ArrayList<Product> getInventory() {        
     	
-    	String filePath = "C:\\Users\\gerar\\git\\repository2\\DAM2_M13_UF1_POO_Shop\\files2\\inputInventory.xml";
+    	String filePath = System.getProperty("user.dir") + "/xml/inputInventory.xml";
         List<Product> inventory = saxReader.readInventoryFromXML(filePath);
         
         if (inventory != null && !inventory.isEmpty()) {

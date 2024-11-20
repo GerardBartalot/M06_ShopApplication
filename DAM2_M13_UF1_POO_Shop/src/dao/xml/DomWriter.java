@@ -4,7 +4,6 @@ import model.Product;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -65,8 +64,8 @@ public class DomWriter {
 
     // Método para generar el archivo XML
     public boolean generateXml(List<Product> productList) {
-    	
-    	 try {
+
+        try {
             Document doc = generateDocument(productList);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -74,9 +73,19 @@ public class DomWriter {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
+            // Crear la ruta dinámica para el archivo
             String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            String filePath = System.getProperty("user.dir") + "/xml/inventory_" + currentDate + ".xml";
+
+            // Asegurarse de que el directorio xml exista
+            File xmlDir = new File(System.getProperty("user.dir") + "/xml");
+            if (!xmlDir.exists()) {
+                xmlDir.mkdirs();
+            }
+
+            // Escribir el archivo
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("C:\\\\Users\\\\gerar\\\\git\\\\repository2\\\\DAM2_M13_UF1_POO_Shop\\\\files\\\\inventory_" + currentDate + ".xml"));
+            StreamResult result = new StreamResult(new File(filePath));
 
             transformer.transform(source, result);
 
@@ -86,6 +95,4 @@ public class DomWriter {
             return false;
         }
     }
-
-    
 }
