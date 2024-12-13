@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<products total="11">
+    <product id="1" name="Manzana">
+        <available>true</available>
+        <wholesalerPrice currency="€">10.0</wholesalerPrice>
+        <publicPrice currency="€">20.0</publicPrice>
+        <stock>10</stock>
+    </product>
+    <product id="2" name="Pera">
+        <available>true</available>
+        <wholesalerPrice currency="€">20.0</wholesalerPrice>
+        <publicPrice currency="€">40.0</publicPrice>
+        <stock>20</stock>
+    </product>
+    <product id="3" name="Hamburguesa">
+        <available>true</available>
+        <wholesalerPrice currency="€">30.0</wholesalerPrice>
+        <publicPrice currency="€">60.0</publicPrice>
+        <stock>30</stock>
+    </product>
+    <product id="4" name="Fresa">
+        <available>true</available>
+        <wholesalerPrice currency="€">5.0</wholesalerPrice>
+        <publicPrice currency="€">10.0</publicPrice>
+        <stock>20</stock>
+    </product>
+    <product id="5" name="Melocotón">
+        <available>true</available>
+        <wholesalerPrice currency="€">20.0</wholesalerPrice>
+        <publicPrice currency="€">40.0</publicPrice>
+        <stock>10</stock>
+    </product>
+    <product id="6" name="Mango">
+        <available>true</available>
+        <wholesalerPrice currency="€">20.0</wholesalerPrice>
+        <publicPrice currency="€">40.0</publicPrice>
+        <stock>20</stock>
+    </product>
+    <product id="7" name="Aguacate">
+        <available>true</available>
+        <wholesalerPrice currency="€">30.0</wholesalerPrice>
+        <publicPrice currency="€">60.0</publicPrice>
+        <stock>30</stock>
+    </product>
+    <product id="8" name="Cereza">
+        <available>true</available>
+        <wholesalerPrice currency="€">15.0</wholesalerPrice>
+        <publicPrice currency="€">30.0</publicPrice>
+        <stock>20</stock>
+    </product>
+    <product id="9" name="Naranja">
+        <available>true</available>
+        <wholesalerPrice currency="€">20.0</wholesalerPrice>
+        <publicPrice currency="€">40.0</publicPrice>
+        <stock>10</stock>
+    </product>
+    <product id="10" name="Kiwi">
+        <available>true</available>
+        <wholesalerPrice currency="€">30.0</wholesalerPrice>
+        <publicPrice currency="€">60.0</publicPrice>
+        <stock>20</stock>
+    </product>
+    <product id="11" name="Pomelo">
+        <available>true</available>
+        <wholesalerPrice currency="€">25.0</wholesalerPrice>
+        <publicPrice currency="€">50.0</publicPrice>
+        <stock>30</stock>
+    </product>
+</products>
