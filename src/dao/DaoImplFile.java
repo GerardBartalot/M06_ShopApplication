@@ -28,7 +28,6 @@ public class DaoImplFile implements Dao{
 
 	private Connection connection;
 
-	// Método para Connectar con la Base de Datos
 	@Override
 	public void connect() {
 	}

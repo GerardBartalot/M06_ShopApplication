@@ -16,14 +16,17 @@ import java.util.Arrays;
 import java.util.Scanner;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import dao.Dao;
 import dao.DaoImplFile;
+import dao.DaoImplHibernate;
 import dao.DaoImplJDBC;
 import dao.DaoImplJaxb;
 import dao.DaoImplXml;
 import utils.*;
 import view.CashView;
+import view.InventoryView;
 import view.ProductView;
 
 public class Shop {
@@ -32,7 +35,7 @@ public class Shop {
     private ArrayList<Product> inventory;
     private ArrayList<Sale> sales;
     int sale_num = 0;
-    public DaoImplJDBC dao;
+    public DaoImplHibernate dao;
 
     final static double TAX_RATE = 1.04;
 
@@ -40,7 +43,7 @@ public class Shop {
         cash = new Amount(50.0, "€");
         inventory = new ArrayList<>();
         sales = new ArrayList<>();
-        dao = new DaoImplJDBC();
+        dao = new DaoImplHibernate();
         dao.connect();
         loadInventory();
         readInventory();
@@ -218,10 +221,17 @@ public class Shop {
     
 	// Aquí Leemos el Fichero
 	
-	public void readInventory() throws IOException {
-		this.setInventory(dao.getInventory());
-	}
-
+    public void readInventory() throws IOException {
+        this.setInventory(dao.getInventory());
+        for (Product product : inventory) {
+            if (product.getWholesalerPrice() == null) {
+                product.setWholesalerPrice(new Amount(product.getPrice(), "€"));
+            }
+            if (product.getPublicPrice() == null) {
+                product.setPublicPrice(new Amount(product.getWholesalerPrice().getValue() * 2, "€"));
+            }
+        }
+    }
 
 	private void setInventory(ArrayList<Product> inventory) {
 		this.inventory=inventory;
@@ -293,11 +303,12 @@ public class Shop {
 	 * show all inventory
 	 */
 	public void showInventory() {
-	    System.out.println("\nContenido actual de la tienda:");
-	    for (Product product : inventory) {
-	        System.out.println(product);
-	    }
+	    SwingUtilities.invokeLater(() -> {
+	        new InventoryView(inventory);
+	    });
 	}
+
+
 
 	/**
 	 * make a sale of products to a client

@@ -155,7 +155,7 @@ public class ProductView extends javax.swing.JDialog {
                 if (productExists) {
                     JOptionPane.showMessageDialog(this, "El producto ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    shop.addProduct(new Product(productName, new Amount(price, "€"), true, stock));
+                	shop.addProduct(new Product(true, productName, price, stock));
                     JOptionPane.showMessageDialog(this, "Producto añadido correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
                     this.dispose();
                 }
@@ -164,11 +164,17 @@ public class ProductView extends javax.swing.JDialog {
                 if (!productExists) {
                     JOptionPane.showMessageDialog(this, "El producto no existe.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    Product product = shop.findProduct(productName);
-                    product.setStock(product.getStock() + stock);
-                    shop.dao.updateProduct(productName, product.getStock());
-                    JOptionPane.showMessageDialog(this, "Stock actualizado correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
-                    dispose();
+                    Product existingProduct = shop.findProduct(productName);
+                    if (existingProduct != null) {
+                        int newStock = existingProduct.getStock() + stock;
+                        boolean updateSuccess = shop.dao.updateProduct(productName, newStock);
+                        if (updateSuccess) {
+                            JOptionPane.showMessageDialog(this, "Stock actualizado correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Error al actualizar el stock.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        dispose();
+                    }
                 }
             } else if (option == Constants.OPTION_REMOVE_PRODUCT) {
                 if (!productExists) {

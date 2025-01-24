@@ -92,7 +92,7 @@ public class DaoImplJDBC implements Dao {
 	}
 	@Override
 	public boolean writeInventory(ArrayList<Product> getInventory) {
- String query = "INSERT INTO historical_inventory (id_producto, name, wholesalerPrice, available, stock, created_at) "
+	String query = "INSERT INTO historical_inventory (id_producto, name, wholesalerPrice, available, stock, created_at) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			for (Product product : getInventory) {
 				LocalDateTime currentDateTime = LocalDateTime.now();

@@ -1,31 +1,64 @@
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "product")
-@XmlType(propOrder = {"id", "name", "available", "wholesalerPrice", "publicPrice", "stock"})
+@Entity
+@Table(name = "inventory")
 public class Product {
 
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
-    private Amount publicPrice;
-    private Amount wholesalerPrice;
-    private boolean available = true;
-    private int stock;
-    public static int totalProducts = 0;
+	
+	@Column(name = "available")
+	private boolean available = true;
+   
+	@Column(name = "name", nullable = false, unique = true)
+	private String name;
+    
+	@Column(name = "price")
+	private double price;
+
+	@Column(name = "stock")
+	private int stock;
+	
+	@Transient
+	private Amount publicPrice;
+    
+	@Transient
+	private Amount wholesalerPrice;
+    
+	@Transient
+	public static int totalProducts = 0;
 
     private static final double EXPIRATION_RATE = 0.60;
 
     public Product(String name, Amount wholesalerPrice, boolean available, int stock) {
-        this.id = ++totalProducts; // Autoincremento del ID
+        this.id = ++totalProducts;
         this.name = name;
-        setWholesalerPrice(wholesalerPrice); // Configura wholesalerPrice y actualiza publicPrice
+        setWholesalerPrice(wholesalerPrice);
         this.available = available;
         this.stock = stock;
     }
+    
+    public Product(boolean available, String name, double price, int stock) {
+        this.id = ++totalProducts;
+        this.name = name;
+        this.price = price;
+        this.wholesalerPrice = new Amount(price, "€");
+        this.publicPrice = new Amount(price * 2, "€");
+        this.available = available;
+        this.stock = stock;
+    }
+
 
     // Constructor vacío requerido para JAXB
     public Product() {
@@ -49,6 +82,14 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
     @XmlElement
     public Amount getPublicPrice() {
@@ -94,8 +135,18 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product --> [Name = " + name + ", Public Price = " + publicPrice + ", Wholesaler Price = " + wholesalerPrice
+        return "Product --> [Id = " + id + ", Name = " + name + ", Public Price = " + publicPrice + ", Wholesaler Price = " + wholesalerPrice
                 + ", Available = " + available + ", Stock = " + stock + "]";
     }
+
+	public String getCreatedAt() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public double getProductId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     
 }
