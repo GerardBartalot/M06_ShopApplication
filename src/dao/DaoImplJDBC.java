@@ -46,11 +46,11 @@ public class DaoImplJDBC implements Dao {
 			// set id to search for
 			ps.setInt(1,employeeId);
 		  	//System.out.println(ps.toString());
-	        try (ResultSet rs = ps.executeQuery()) {
+	        /*try (ResultSet rs = ps.executeQuery()) {
 	        	if (rs.next()) {
 	        		employee =  new Employee(rs.getInt(1), rs.getString(3));            		            				
 	        	}
-	        }
+	        } */
 	    } catch (SQLException e) {
 			// in case error in SQL
 			e.printStackTrace();

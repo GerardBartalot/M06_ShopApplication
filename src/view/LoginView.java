@@ -7,6 +7,8 @@ package view;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
+
+import dao.DaoImplHibernate;
 import view.ShopView;
 import model.Employee;
 import utils.Constants;
@@ -132,7 +134,12 @@ public class LoginView extends javax.swing.JFrame {
             if (numeroEmpleado == 0 || password.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "El usuario y la contraseña son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                Employee employee = new Employee(numeroEmpleado, password);
+            	DaoImplHibernate dao = new DaoImplHibernate();
+            	dao.connect();
+
+            	Employee employee = dao.getEmployee(numeroEmpleado, password);
+
+            	dao.disconnect();
 
                 // boolean logged = employee.login(numeroEmpleado, password);
                 boolean logged=true;

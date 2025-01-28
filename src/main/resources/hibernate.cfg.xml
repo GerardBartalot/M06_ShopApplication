@@ -12,5 +12,6 @@
         <!-- Mapping de las clases -->
         <mapping class="model.Product"/>
         <mapping class="model.ProductHistory"/>
+        <mapping class="model.Employee"/>       
     </session-factory>
 </hibernate-configuration>

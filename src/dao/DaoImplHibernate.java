@@ -1,6 +1,7 @@
 package dao;
 
 import model.Amount;
+import model.Employee;
 import model.Product;
 import model.ProductHistory;
 import org.hibernate.Session;
@@ -43,7 +44,7 @@ public class DaoImplHibernate implements Dao {
     public ArrayList<Product> getInventory() throws IOException {
         try (Session session = sessionFactory.openSession()) {
             List<Product> productList = session.createQuery("FROM Product", Product.class).list();
-
+                   
             if (productList.isEmpty()) {
                 System.out.println("Inventario vacío");
                 
@@ -58,7 +59,17 @@ public class DaoImplHibernate implements Dao {
                 addProduct(new Product(true, "Naranja", 20.00, 10));
                 addProduct(new Product(true, "Kiwi", 30.00, 20));
 
-                productList = session.createQuery("FROM Product", Product.class).list();               
+                productList = session.createQuery("FROM Product", Product.class).list();
+                               
+            } else {
+            	for (Product product : productList) {
+                    if (product.getWholesalerPrice() == null) {
+                        product.setWholesalerPrice(new Amount(product.getPrice(), "€"));
+                    }
+                    if (product.getPublicPrice() == null) {
+                        product.setPublicPrice(new Amount(product.getWholesalerPrice().getValue() * 2, "€"));
+                    }
+                }
             }
 
             return new ArrayList<>(productList);
@@ -146,7 +157,17 @@ public class DaoImplHibernate implements Dao {
     }
 
     @Override
-    public model.Employee getEmployee(int employeeId, String password) {
-        return null;
+    public Employee getEmployee(int employeeId, String password) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                "FROM Employee WHERE employeeId = :id AND employeePassword = :password", Employee.class)
+                .setParameter("id", employeeId)
+                .setParameter("password", password)
+                .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
 }

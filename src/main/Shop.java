@@ -152,23 +152,28 @@ public class Shop {
 
     public static boolean initSession() {
         Scanner scanner = new Scanner(System.in);
-        int employeeId = scanner.nextInt();
-        String password = scanner.next();
+        DaoImplHibernate dao = new DaoImplHibernate(); // Crear instancia de DaoImplHibernate
+        dao.connect(); // Conectar a la base de datos
 
-        Employee employee = new Employee(employeeId, password);
+        boolean loggedIn = false;
+        try {
+            while (!loggedIn) {
+                int employeeId = scanner.nextInt();
+                String password = scanner.next();
 
-        // Verificar credenciales
-        boolean loggedIn = employee.login(employeeId, password);
+                Employee employee = dao.getEmployee(employeeId, password);
 
-        // Si el inicio de sesión falla, pedir datos nuevamente
-        while (!loggedIn) {
-            System.out.println("Credenciales incorrectas. Por favor, inténtelo de nuevo.");
-            System.out.println("Por favor, ingrese su número de empleado:");
-            employeeId = scanner.nextInt();
-            System.out.println("Por favor, ingrese su contraseña:");
-            password = scanner.next();
-            employee = new Employee(employeeId, password);
-            loggedIn = employee.login(employeeId, password);
+                if (employee != null) {
+                    loggedIn = true;
+                    System.out.println("Inicio de sesión exitoso. Bienvenido, empleado " + employeeId + "!");
+                } else {
+                    System.out.println("Credenciales incorrectas. Por favor, inténtelo de nuevo.");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dao.disconnect();
         }
 
         return loggedIn;
@@ -222,20 +227,11 @@ public class Shop {
 	// Aquí Leemos el Fichero
 	
     public void readInventory() throws IOException {
-        this.setInventory(dao.getInventory());
-        for (Product product : inventory) {
-            if (product.getWholesalerPrice() == null) {
-                product.setWholesalerPrice(new Amount(product.getPrice(), "€"));
-            }
-            if (product.getPublicPrice() == null) {
-                product.setPublicPrice(new Amount(product.getWholesalerPrice().getValue() * 2, "€"));
-            }
+        this.setInventory(dao.getInventory());      
         }
-    }
 
 	private void setInventory(ArrayList<Product> inventory) {
-		this.inventory=inventory;
-		
+		this.inventory=inventory;		
 	}
 
 	/**
