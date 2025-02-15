@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 import dao.DaoImplHibernate;
+import dao.DaoImplMongoDB;
 import view.ShopView;
 import model.Employee;
 import utils.Constants;
@@ -123,7 +124,7 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_CampoPassword
 
     
-    private void BotonLoginActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_BotonLoginActionPerformed
+    private void BotonLoginActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
         int numeroEmpleado;
         String password;
 
@@ -131,39 +132,40 @@ public class LoginView extends javax.swing.JFrame {
             numeroEmpleado = Integer.parseInt(CampoNumeroEmpleado.getText());
             password = CampoPassword.getText();
 
-            if (numeroEmpleado == 0 || password.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "El usuario y la contraseña son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (password.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "La contraseña es obligatoria.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            DaoImplMongoDB dao = new DaoImplMongoDB();
+            dao.connect();
+
+            Employee employee = dao.getEmployee(numeroEmpleado, password);
+
+            dao.disconnect();
+
+            if (employee != null) {
+                // Inicio de sesión exitoso, abrir la vista de tienda
+                ShopView shop = new ShopView();
+                shop.setExtendedState(NORMAL);
+                shop.setVisible(true);
+                dispose();  // Cerrar la ventana LoginView cuando se accede correctamente
             } else {
-            	DaoImplHibernate dao = new DaoImplHibernate();
-            	dao.connect();
-
-            	Employee employee = dao.getEmployee(numeroEmpleado, password);
-
-            	dao.disconnect();
-
-                // boolean logged = employee.login(numeroEmpleado, password);
-                boolean logged=true;
-                if (logged) {
-                    ShopView shop = new ShopView();
-                    shop.setExtendedState(NORMAL);
-                    shop.setVisible(true);
-                    dispose();  // Cerrar la ventana LoginView cuando se accede correctamente
+                // Credenciales incorrectas, mostrar mensaje de error
+                counterErrorLogin++;
+                if (counterErrorLogin >= Constants.MAX_LOGIN_TIMES) {
+                    JOptionPane.showMessageDialog(null, "Ha superado el número máximo de intentos. La aplicación se cerrará.", "Error intentos", JOptionPane.ERROR_MESSAGE);
+                    dispose();  // Cerrar la ventana LoginView si se supera el límite de intentos
                 } else {
-                    counterErrorLogin++;
-                    if (Constants.MAX_LOGIN_TIMES <= counterErrorLogin) {
-                        JOptionPane.showMessageDialog(null, "Ha superado el número máximo de intentos. La aplicación se cerrará.", "Error intentos", JOptionPane.ERROR_MESSAGE);
-                        dispose();  // Cerrar la ventana LoginView si se supera el límite de intentos
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Error login", JOptionPane.ERROR_MESSAGE);
-                        CampoNumeroEmpleado.setText("");
-                        CampoPassword.setText("");
-                    }
+                    JOptionPane.showMessageDialog(null, "Usuario o password incorrectos", "Error login", JOptionPane.ERROR_MESSAGE);
+                    CampoNumeroEmpleado.setText("");
+                    CampoPassword.setText("");
                 }
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "El número de empleado debe ser un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_BotonLoginActionPerformed
+    }
 
     
    

@@ -1,5 +1,6 @@
 package model;
 
+import dao.DaoImplMongoDB;
 import main.Logable;
 
 import javax.persistence.Column;
@@ -12,8 +13,10 @@ import javax.persistence.Table;
 import dao.Dao;
 import dao.DaoImplHibernate;
 
+import java.sql.SQLException;
+
 @Entity
-@Table(name = "employee")
+@Table(name = "users")
 public class Employee extends Person implements Logable {
     
 	@Id
@@ -60,8 +63,8 @@ public class Employee extends Person implements Logable {
 
     @Override
     public boolean login(int employeeId, String password) {
+        DaoImplMongoDB dao = new DaoImplMongoDB();
         boolean isAuthenticated = false;
-        DaoImplHibernate dao = new DaoImplHibernate();
 
         try {
             dao.connect();

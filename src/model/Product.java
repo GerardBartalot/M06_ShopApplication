@@ -1,6 +1,8 @@
 package model;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +26,7 @@ public class Product {
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
     
-	@Column(name = "price")
+	@Transient
 	private double price;
 
 	@Column(name = "stock")
@@ -33,8 +35,9 @@ public class Product {
 	@Transient
 	private Amount publicPrice;
     
-	@Transient
-	private Amount wholesalerPrice;
+	@Column(name = "wholesaler Price")
+	@Embedded
+    private Amount wholesalerPrice;
     
 	@Transient
 	public static int totalProducts = 0;
@@ -42,10 +45,10 @@ public class Product {
     private static final double EXPIRATION_RATE = 0.60;
 
     public Product(String name, Amount wholesalerPrice, boolean available, int stock) {
-        this.id = ++totalProducts;
-        this.name = name;
-        setWholesalerPrice(wholesalerPrice);
-        this.available = available;
+    	this.id = ++totalProducts;
+    	this.name = name; 
+        this.wholesalerPrice = wholesalerPrice;
+        this.available = available; 
         this.stock = stock;
     }
     
@@ -147,6 +150,42 @@ public class Product {
 	public double getProductId() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Embeddable
+	class WholesalerPrice {
+	    private double value;
+	    private String currency;
+	    
+	    public WholesalerPrice() {}
+	    
+	    public WholesalerPrice(double value, String currency) {
+	        this.value = value;
+	        this.currency = currency;
+	    }
+	    
+	    @XmlElement
+	    public double getValue() {
+	        return value;
+	    }
+	    
+	    public void setValue(double value) {
+	        this.value = value;
+	    }
+	    
+	    @XmlElement
+	    public String getCurrency() {
+	        return currency;
+	    }
+	    
+	    public void setCurrency(String currency) {
+	        this.currency = currency;
+	    }
+	    
+	    @Override
+	    public String toString() {
+	        return "WholesalerPrice [value=" + value + ", currency=" + currency + "]";
+	    }
 	}
     
 }

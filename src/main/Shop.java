@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.EventQueue;
+
+import dao.*;
 import model.Amount;
 import model.Client;
 import model.Employee;
@@ -18,12 +20,6 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import dao.Dao;
-import dao.DaoImplFile;
-import dao.DaoImplHibernate;
-import dao.DaoImplJDBC;
-import dao.DaoImplJaxb;
-import dao.DaoImplXml;
 import utils.*;
 import view.CashView;
 import view.InventoryView;
@@ -35,7 +31,7 @@ public class Shop {
     private ArrayList<Product> inventory;
     private ArrayList<Sale> sales;
     int sale_num = 0;
-    public DaoImplHibernate dao;
+    public DaoImplMongoDB dao;
 
     final static double TAX_RATE = 1.04;
 
@@ -43,7 +39,7 @@ public class Shop {
         cash = new Amount(50.0, "€");
         inventory = new ArrayList<>();
         sales = new ArrayList<>();
-        dao = new DaoImplHibernate();
+        dao = new DaoImplMongoDB();
         dao.connect();
         loadInventory();
         readInventory();
@@ -152,7 +148,7 @@ public class Shop {
 
     public static boolean initSession() {
         Scanner scanner = new Scanner(System.in);
-        DaoImplHibernate dao = new DaoImplHibernate(); // Crear instancia de DaoImplHibernate
+        DaoImplMongoDB dao = new DaoImplMongoDB();
         dao.connect(); // Conectar a la base de datos
 
         boolean loggedIn = false;
@@ -427,9 +423,8 @@ public class Shop {
 
 	/**
 	 * find product by name
-	 * 
-	 * @param product name
-	 */
+	 *
+     */
 	public Product findProduct(String name) {
 	    for (Product product : inventory) {
 	        if (product != null && product.getName().equalsIgnoreCase(name)) {
